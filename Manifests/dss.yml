@@ -78,7 +78,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 3tier-service
+  name: tier3-service   # Adjusted service name
 spec:
   selector:
     app: 3tier
