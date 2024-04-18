@@ -45,7 +45,7 @@ spec:
             - name: CLOUDINARY_KEY
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: CLOUDINARY_KEY
             - name: CLOUDINARY_SECRET
               valueFrom:
