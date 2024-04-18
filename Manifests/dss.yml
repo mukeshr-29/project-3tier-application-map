@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: 3tier-container
-          image: mukeshr29/3tier-camp:prod
+          image: mukeshr29/3-tier-camp:prod
           ports:
             - containerPort: 3000
           env:
