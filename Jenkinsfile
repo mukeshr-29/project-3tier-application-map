@@ -70,7 +70,7 @@ pipeline{
             steps{
                 script{
                     dir('Manifests'){
-                        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '3-tier', contextName: '', credentialsId: 'k8s', namespace: 'webapps', serverUrl: 'https://0D17076E0B2094750553F6E55C0BEEEF.gr7.us-east-1.eks.amazonaws.com']]){
+                        withKubeConfig(caCertificate: '', clusterName: '3-tier', contextName: '', credentialsId: 'k8s', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://0D17076E0B2094750553F6E55C0BEEEF.gr7.us-east-1.eks.amazonaws.com') {
                             sh 'kubectl apply -f dss.yml'
                             sleep 60
                         }
@@ -81,7 +81,7 @@ pipeline{
         stage('verify deployment'){
             steps{
                 script{
-                    withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '3-tier', contextName: '', credentialsId: 'k8s', namespace: 'webapps', serverUrl: 'https://0D17076E0B2094750553F6E55C0BEEEF.gr7.us-east-1.eks.amazonaws.com']]){
+                    withKubeConfig(caCertificate: '', clusterName: '3-tier', contextName: '', credentialsId: 'k8s', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://0D17076E0B2094750553F6E55C0BEEEF.gr7.us-east-1.eks.amazonaws.com') {
                         sh 'kubectl get pods'
                         sh 'kubectl get svc'
                     }
