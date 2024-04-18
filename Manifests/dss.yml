@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: 3-tier-secrets
+type: Opaque
+data:
+  CLOUDINARY_CLOUD_NAME=ZGVmY2NyeGRpCg==
+  CLOUDINARY_KEY=Mzg5MjYxODEzNTcxNjU4Cg==
+  CLOUDINARY_SECRET=b2IxTDdWb0RpZ2xkc3F4STVlLTFzZW9FdjRRCg==
+  MAPBOX_TOKEN=c2suZXlKMUlqb2liWFZyWlhOb2NqSTVJaXdpWVNJNkltTnNkalI1WW5CemFUQm1kbTR5Ykc0eE9U
+  RnpObUUwT1c4aWZRLjVGaWkwUGV5anJkTWpXSm05S2hlZUEK
+  DB_URL=bW9uZ29kYitzcnY6Ly9tdWtlc2hyMjkxMTo3QUhOUVJKT09Uc2hSVElzQGRldm9wcy10b21teS55
+  aGU4bXg4Lm1vbmdvZGIubmV0Lz9yZXRyeVdyaXRlcz10cnVlJnc9bWFqb3JpdHkmYXBwTmFtZT1k
+  ZXZvcHMtdG9tbXkK
+  SECRET=bXVrZXNoMTIzCg==
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 3-tier-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 3-tier
+  template:
+    metadata:
+      labels:
+        app: 3-tier
+    spec:
+      containers:
+        - name: 3-tier-container
+          image: mukeshr29/3-tier-camp:prod
+          ports:
+            - containerPort: 3000
+          env:
+            - name: CLOUDINARY_CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: CLOUDINARY_CLOUD_NAME
+            - name: CLOUDINARY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: CLOUDINARY_KEY
+            - name: CLOUDINARY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: CLOUDINARY_SECRET
+            - name: MAPBOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: MAPBOX_TOKEN
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: DB_URL
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: 3-tier-secrets
+                  key: SECRET
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30   # Adjust the initial delay here
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30   # Adjust the initial delay here
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 3-tier-service
+spec:
+  selector:
+    app: 3-tier
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
