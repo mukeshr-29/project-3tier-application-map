@@ -31,7 +31,7 @@ pipeline{
             steps{
                 script{
                     withSonarQubeEnv('sonar-server'){
-                        sh '$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=3-tier-dev -Dsonar.projectName=3-tier-dev'
+                        sh '$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=3-tier-prod -Dsonar.projectName=3-tier-prod'
                     }
                 }
             }
