@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: 3-tier-secrets
+  name: 3tier-secrets
 type: Opaque
 data:
   CLOUDINARY_CLOUD_NAME=ZGVmY2NyeGRpCg==
@@ -20,27 +20,27 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 3-tier-deployment
+  name: 3tier-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 3-tier
+      app: 3tier
   template:
     metadata:
       labels:
-        app: 3-tier
+        app: 3tier
     spec:
       containers:
-        - name: 3-tier-container
-          image: mukeshr29/3-tier-camp:prod
+        - name: 3tier-container
+          image: mukeshr29/3tier-camp:prod
           ports:
             - containerPort: 3000
           env:
             - name: CLOUDINARY_CLOUD_NAME
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: CLOUDINARY_CLOUD_NAME
             - name: CLOUDINARY_KEY
               valueFrom:
@@ -50,22 +50,22 @@ spec:
             - name: CLOUDINARY_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: CLOUDINARY_SECRET
             - name: MAPBOX_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: MAPBOX_TOKEN
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: DB_URL
             - name: SECRET
               valueFrom:
                 secretKeyRef:
-                  name: 3-tier-secrets
+                  name: 3tier-secrets
                   key: SECRET
           livenessProbe:
             httpGet:
@@ -82,10 +82,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 3-tier-service
+  name: 3tier-service
 spec:
   selector:
-    app: 3-tier
+    app: 3tier
   ports:
     - protocol: TCP
       port: 3000
